@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maxime Principe — Coaching</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0f;
+    --white: #f0f4ff;
+    --blue: #3b82f6;
+    --blue-light: #60a5fa;
+    --gray: #111827;
+    --gray-mid: #1e293b;
+    --text-muted: #64748b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 64px 24px 44px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 500px;
+    background: radial-gradient(circle, rgba(59,130,246,0.13) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .coach-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.35em;
+    color: var(--blue);
+    margin-bottom: 20px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 13vw, 88px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+    animation: fadeUp 0.5s 0.08s ease both;
+  }
+
+  .hero-title span { color: var(--blue); display: block; }
+
+  .hero-sub {
+    font-size: 14px;
+    color: #64748b;
+    max-width: 360px;
+    margin: 0 auto;
+    line-height: 1.75;
+    animation: fadeUp 0.5s 0.16s ease both;
+  }
+
+  .hero-sub strong { color: var(--white); font-weight: 500; }
+
+  .divider {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--blue), transparent);
+    margin: 28px auto 0;
+    animation: fadeUp 0.5s 0.24s ease both;
+  }
+
+  /* STEPS */
+  .steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 24px 0 8px;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+
+  .step-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gray-mid);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .step-dot.active { background: var(--blue); transform: scale(1.4); box-shadow: 0 0 8px var(--blue); }
+  .step-dot.done { background: #334155; }
+
+  /* FORM */
+  .form-wrap {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .q-block {
+    background: var(--gray);
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 24px 22px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.4s ease both;
+    transition: border-color 0.2s;
+  }
+
+  .q-block:focus-within { border-color: rgba(59,130,246,0.4); }
+
+  .q-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  .q-label {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .q-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  input[type=text],
+  input[type=email],
+  input[type=tel],
+  textarea {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 4px;
+    padding: 13px 15px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input::placeholder, textarea::placeholder { color: #334155; }
+
+  input:focus, textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+  }
+
+  textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+  /* Pills */
+  .pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .pill { position: relative; cursor: pointer; }
+  .pill input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+  .pill-label {
+    display: block;
+    padding: 9px 16px;
+    border: 1px solid #1e293b;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #64748b;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+
+  .pill input:checked + .pill-label {
+    border-color: var(--blue);
+    color: var(--blue-light);
+    background: rgba(59,130,246,0.1);
+  }
+
+  .pill:hover .pill-label { border-color: #334155; color: var(--white); }
+
+  /* Submit */
+  .submit-wrap { margin-top: 32px; }
+
+  .btn-submit {
+    width: 100%;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 18px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 19px;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+
+  .btn-submit:hover {
+    background: var(--blue-light);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 32px rgba(59,130,246,0.3);
+  }
+
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .submit-note {
+    text-align: center;
+    font-size: 12px;
+    color: #475569;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* SUCCESS */
+  .success-screen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 28px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .success-screen.visible { display: flex; }
+
+  .check-circle {
+    width: 80px; height: 80px;
+    border: 1.5px solid var(--blue);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 32px;
+    box-shadow: 0 0 40px rgba(59,130,246,0.2);
+  }
+
+  .success-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--blue);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .success-sub {
+    font-size: 15px;
+    color: #64748b;
+    line-height: 1.8;
+    max-width: 320px;
+  }
+
+  .success-sub strong { color: var(--white); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div id="mainContent">
+  <div class="hero">
+    <div class="coach-name">MAXIME PRINCIPE — COACHING</div>
+    <h1 class="hero-title">
+      C'EST L'HEURE
+      <span>DE SE TRANSFORMER</span>
+    </h1>
+    <p class="hero-sub">
+      Si tu es ici, c'est que tu me suis et que tu veux <strong>évoluer ou exceller en sport</strong> tout en gardant un lifestyle équilibré. Alors bienvenue.<br><br>
+      Merci pour ton intérêt. Remplis ce questionnaire — c'est juste une mise en contact, ça n'engage à rien. Je te recontacte par email ou Instagram pour qu'on en discute.
+    </p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="steps" id="stepsIndicator">
+    <div class="step-dot active" id="dot0"></div>
+    <div class="step-dot" id="dot1"></div>
+    <div class="step-dot" id="dot2"></div>
+    <div class="step-dot" id="dot3"></div>
+    <div class="step-dot" id="dot4"></div>
+    <div class="step-dot" id="dot5"></div>
+    <div class="step-dot" id="dot6"></div>
+    <div class="step-dot" id="dot7"></div>
+    <div class="step-dot" id="dot8"></div>
+    <div class="step-dot" id="dot9"></div>
+    <div class="step-dot" id="dot10"></div>
+  </div>
+
+  <div class="form-wrap">
+    <form id="preForm" novalidate>
+
+      <div class="q-block" style="animation-delay:0.05s">
+        <div class="q-num">01 —</div>
+        <div class="q-label">Ton nom & prénom <span style="color:var(--blue)">*</span></div>
+        <div class="q-hint">Celui que tu utilises au quotidien</div>
+        <input type="text" name="nom" placeholder="Thomas Martin" required>
+      </div>
+
+      <div class="q-block" style="animation-delay:0.08s">
+        <div class="q-num">02 —</div>
+        <div class="q-label">Ta date de naissance <span style="color:var(--blue)">*</span></div>
+        <input type="text" name="age" placeholder="JJ/MM/AAAA — ex: 15/03/1998" required style="width:250px;">
+      </div>
+
+      <div class="q-block" style="animation-delay:0.1s">
+        <div class="q-num">03 —</div>
+        <div class="q-label">Ton Instagram <span style="color:var(--blue)">*</span></div>
+        <div class="q-hint">C'est souvent là que je te réponds en premier</div>
+        <input type="text" name="instagram" placeholder="@tonpseudo" required>
+      </div>
+
+      <div class="q-block" style="animation-delay:0.13s">
+        <div class="q-num">04 —</div>
+        <div class="q-label">Ton adresse email <span style="color:var(--blue)">*</span></div>
+        <input type="email" name="email" placeholder="ton@email.com" required>
+      </div>
+
+      <div class="q-block" style="animation-delay:0.17s">
+        <div class="q-num">05 —</div>
+        <div class="q-label">Ton numéro de téléphone <span style="color:var(--blue)">*</span></div>
+        <input type="tel" name="telephone" placeholder="+33 6 00 00 00 00" required>
+      </div>
+
+      <div class="q-block" style="animation-delay:0.25s">
+        <div class="q-num">06 —</div>
+        <div class="q-label">Tu cherches quel type de suivi ? <span style="color:var(--blue)">*</span></div>
+        <div class="q-hint">Choisis ce qui te correspond</div>
+        <div class="pill-group">
+          <label class="pill"><input type="radio" name="type_suivi" value="Musculation" required><span class="pill-label">💪 Musculation</span></label>
+          <label class="pill"><input type="radio" name="type_suivi" value="Course à pied"><span class="pill-label">🏃 Course à pied</span></label>
+          <label class="pill"><input type="radio" name="type_suivi" value="Hybride (les deux)"><span class="pill-label">⚡ Hybride (les deux)</span></label>
+        </div>
+      </div>
+
+      <div class="q-block" style="animation-delay:0.3s">
+        <div class="q-num">07 —</div>
+        <div class="q-label">Ton objectif principal <span style="color:var(--blue)">*</span></div>
+        <div class="q-hint">Ex: finir un marathon en moins de 4h, atteindre 90kg sec, courir un 10km, prendre 5kg de muscle…</div>
+        <textarea name="objectif" placeholder="Décris ton objectif ici — sois le plus précis possible" required></textarea>
+      </div>
+
+      <div class="q-block" style="animation-delay:0.35s">
+        <div class="q-num">08 —</div>
+        <div class="q-label">Ton métier / occupation <span style="color:var(--blue)">*</span></div>
+        <div class="q-hint">Sédentaire (bureau) ou physique ? Ça influence beaucoup la programmation.</div>
+        <div class="pill-group" style="margin-bottom:12px;">
+          <label class="pill"><input type="radio" name="type_metier" value="Sédentaire (bureau)" required><span class="pill-label">💻 Sédentaire (bureau)</span></label>
+          <label class="pill"><input type="radio" name="type_metier" value="Physique / debout"><span class="pill-label">🔧 Physique / debout</span></label>
+          <label class="pill"><input type="radio" name="type_metier" value="Mixte"><span class="pill-label">Mixte</span></label>
+        </div>
+        <input type="text" name="metier_detail" placeholder="Précise ton métier — ex: étudiant, infirmier, commercial…">
+      </div>
+
+      <div class="q-block" style="animation-delay:0.4s">
+        <div class="q-num">09 —</div>
+        <div class="q-label">Ton passé sportif <span style="color:var(--blue)">*</span></div>
+        <div class="q-hint">Sport(s) pratiqué(s), performances réalisées…</div>
+        <textarea name="passe_sportif" placeholder="Ex: 5 ans de foot en amateur, marathon en 4h12, musculation depuis 2 ans…" required></textarea>
+      </div>
+
+      <div class="q-block" style="animation-delay:0.45s">
+        <div class="q-num">10 —</div>
+        <div class="q-label">As-tu des antécédents médicaux ? <span style="color:var(--blue)">*</span></div>
+        <div class="q-hint">Blessures, maladies, opérations…</div>
+        <textarea name="antecedents" placeholder="Ex: Entorse cheville droite en 2022, tendinite épaule gauche toujours présente… / Aucun" required></textarea>
+      </div>
+
+      <div class="q-block" style="animation-delay:0.5s">
+        <div class="q-num">11 —</div>
+        <div class="q-label">Quelles sont tes attentes d'une collaboration avec moi ? <span style="color:var(--blue)">*</span></div>
+        <textarea name="attentes" placeholder="Ex: Un suivi structuré, de la régularité, des feedbacks rapides, un plan nutrition…" required></textarea>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn-submit">ENVOYER MA DEMANDE</button>
+        <p class="submit-note">
+          Ce formulaire n'engage à rien — c'est juste une mise en contact.<br>
+          Je te recontacte sous 48h sur Instagram ou par email pour voir si on est un bon match.
+        </p>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="successScreen">
+  <div class="check-circle">✓</div>
+  <div class="success-title">C'EST REÇU.</div>
+  <p class="success-sub">
+    Merci d'avoir pris le temps de remplir ce formulaire.<br><br>
+    Je te recontacte <strong>sous 48h</strong> sur Instagram ou par email pour qu'on creuse ensemble et voir si on est un bon match.<br><br>
+    <strong>En attendant, continue à bosser. 💪</strong>
+  </p>
+</div>
+
+<script>
+  const form = document.getElementById('preForm');
+  const totalDots = 11;
+
+  function updateProgress() {
+    const fields = ['nom', 'age', 'instagram', 'email', 'telephone'];
+    const radios = ['type_suivi', 'type_metier'];
+    const textareas = ['objectif', 'passe_sportif', 'antecedents', 'attentes'];
+    let filled = 0;
+
+    fields.forEach(name => {
+      if (form[name] && form[name].value.trim()) filled++;
+    });
+    radios.forEach(name => {
+      if (form[name] && [...form[name]].some(r => r.checked)) filled++;
+    });
+    textareas.forEach(name => {
+      if (form[name] && form[name].value.trim()) filled++;
+    });
+
+    for (let i = 0; i < totalDots; i++) {
+      const dot = document.getElementById('dot' + i);
+      if (i < filled) dot.className = 'step-dot done';
+      else if (i === filled) dot.className = 'step-dot active';
+      else dot.className = 'step-dot';
+    }
+  }
+
+  form.querySelectorAll('input, textarea').forEach(input => {
+    input.addEventListener('change', updateProgress);
+    input.addEventListener('input', updateProgress);
+  });
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    let valid = true;
+
+    ['nom','age','instagram','email','telephone'].forEach(name => {
+      if (!form[name].value.trim()) { form[name].focus(); valid = false; }
+    });
+
+    ['type_suivi','type_metier'].forEach(name => {
+      if (![...form[name]].some(r => r.checked)) valid = false;
+    });
+
+    if (!form['objectif'].value.trim()) valid = false;
+    if (!form['passe_sportif'].value.trim()) valid = false;
+    if (!form['antecedents'].value.trim()) valid = false;
+    if (!form['attentes'].value.trim()) valid = false;
+
+    if (!valid) {
+      const firstEmpty = form.querySelector('input:invalid, textarea:invalid');
+      if (firstEmpty) firstEmpty.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const btn = form.querySelector('.btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'ENVOI EN COURS…';
+
+    // ✅ Google Forms — URL + entry IDs liés à ton formulaire
+    const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe2-F0q4_iG-2PaiKiU6Rus7GrzJcRcMNgRX6LFrs0DDzoUiw/formResponse';
+
+    const params = new URLSearchParams();
+    params.append('entry.2043590516',  form['nom'].value.trim());
+    params.append('entry.1626935847',  form['age'].value.trim());
+    params.append('entry.1958935235',  form['instagram'].value.trim());
+    params.append('entry.1798113671',  form['email'].value.trim());
+    params.append('entry.828855637',   form['telephone'].value.trim());
+    params.append('entry.1884845932',  [...form['type_suivi']].find(r => r.checked)?.value || '');
+    params.append('entry.298049072',   form['objectif'].value.trim());
+    params.append('entry.1507191852',  [...form['type_metier']].find(r => r.checked)?.value || '');
+    params.append('entry.517788622',   form['metier_detail'].value.trim());
+    params.append('entry.462053088',   form['passe_sportif'].value.trim());
+    params.append('entry.634860363',   form['antecedents'].value.trim());
+    params.append('entry.907268584',   form['attentes'].value.trim());
+
+    try {
+      await fetch(FORM_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      });
+    } catch(_) {
+      // no-cors — réponse toujours envoyée malgré l'erreur CORS
+    }
+
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('successScreen').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
